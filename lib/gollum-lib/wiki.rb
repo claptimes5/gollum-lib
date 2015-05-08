@@ -164,6 +164,9 @@ module Gollum
     # Gets side on which the sidebar should be shown
     attr_reader :bar_side
 
+    # Sets all links to have rel="nofollow" regardless if they are historical or not
+    attr_writer :all_no_follow
+
     # An array of symbols which refer to classes under Gollum::Filter,
     # each of which is an element in the "filtering chain".  See
     # the documentation for Gollum::Filter for more on how this chain
@@ -243,6 +246,7 @@ module Gollum
       @h1_title             = options.fetch :h1_title, false
       @index_page           = options.fetch :index_page, 'Home'
       @bar_side             = options.fetch :sidebar, :right
+      @all_no_follow        = options.fetch :all_no_follow, false
       @user_icons           = ['gravatar', 'identicon'].include?(options[:user_icons]) ?
           options[:user_icons] : 'none'
       @allow_uploads        = options.fetch :allow_uploads, false
@@ -916,6 +920,10 @@ module Gollum
       end
     rescue Gollum::Git::NoSuchShaFound
       []
+    end
+
+    def all_no_follow?
+      @all_no_follow == true
     end
 
     def inspect

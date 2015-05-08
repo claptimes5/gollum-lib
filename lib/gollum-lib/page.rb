@@ -222,7 +222,7 @@ module Gollum
       if @formatted_data && @doc then
         yield @doc if block_given?
       else
-        @formatted_data = markup_class.render(historical?, encoding, include_levels) do |doc|
+        @formatted_data = markup_class.render(@wiki.all_no_follow? || historical?, encoding, include_levels) do |doc|
           @doc = doc
           yield doc if block_given?
         end

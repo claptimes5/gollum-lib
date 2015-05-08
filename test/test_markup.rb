@@ -149,6 +149,18 @@ context "Markup" do
     assert_match regx, @wiki.page(page.name, sha2).formatted_data
   end
 
+  test "adds nofollow linkson normal pages when global is set" do
+    @wiki.all_no_follow = true
+    @wiki.write_page("Bilbo Baggins", :markdown, "a [[Bilbo Baggins]] b", commit_details)
+
+    page   = @wiki.page("Bilbo Baggins")
+    output = page.formatted_data
+    regx = /rel="nofollow"/
+    assert_match regx, output
+    assert_match /href="\/Bilbo-Baggins"/, output
+    assert_match /\>Bilbo Baggins\</, output
+  end
+
   test "absent page link" do
     @wiki.write_page("Tolkien", :markdown, "a [[J. R. R. Tolkien]]'s b", commit_details)
 
